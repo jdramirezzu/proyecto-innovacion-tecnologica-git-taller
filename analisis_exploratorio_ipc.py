@@ -124,6 +124,114 @@ def analisis_exploratorio_basico(df):
     ipc_por_categoria = ipc_por_categoria.sort_values('mean', ascending=False)
     print(ipc_por_categoria)
 
+def mostrar_menu_graficos():
+    """
+    Muestra el menú de opciones de gráficos disponibles
+    """
+    print("\n📊 MENÚ DE GRÁFICOS DISPONIBLES")
+    print("=" * 50)
+    print("1.  📈 Distribución del IPC (Histograma)")
+    print("2.  📦 Boxplot del IPC por Ciudad (Top 10)")
+    print("3.  📅 Evolución Temporal del IPC Promedio")
+    print("4.  🏷️  IPC Promedio por Categoría")
+    print("5.  🔥 Heatmap IPC por Ciudad y Año")
+    print("6.  🎻 Violin Plot del IPC por Categoría")
+    print("7.  📆 IPC Promedio por Mes")
+    print("8.  📊 Scatter Plot: IPC vs Año")
+    print("9.  📈 Top 10 Ciudades con Mayor Variabilidad")
+    print("10. 🎯 Ver todos los gráficos")
+    print("0.  ❌ Salir")
+    print("=" * 50)
+
+def crear_grafico_individual(df, opcion):
+    """
+    Crea un gráfico individual según la opción seleccionada
+    """
+    plt.figure(figsize=(12, 8))
+    
+    if opcion == 1:
+        # Distribución del IPC
+        plt.hist(df['ipc'], bins=50, alpha=0.7, color='skyblue', edgecolor='black')
+        plt.title('Distribución del IPC', fontsize=16, fontweight='bold')
+        plt.xlabel('Valor del IPC')
+        plt.ylabel('Frecuencia')
+        plt.grid(True, alpha=0.3)
+        
+    elif opcion == 2:
+        # Boxplot del IPC por ciudad (top 10)
+        top_ciudades = df.groupby('city')['ipc'].mean().nlargest(10).index
+        df_top_ciudades = df[df['city'].isin(top_ciudades)]
+        sns.boxplot(data=df_top_ciudades, x='ipc', y='city')
+        plt.title('Distribución del IPC por Ciudad (Top 10)', fontsize=16, fontweight='bold')
+        plt.xlabel('Valor del IPC')
+        
+    elif opcion == 3:
+        # Evolución temporal del IPC promedio
+        ipc_temporal = df.groupby('fecha')['ipc'].mean()
+        plt.plot(ipc_temporal.index, ipc_temporal.values, linewidth=2, color='red')
+        plt.title('Evolución Temporal del IPC Promedio', fontsize=16, fontweight='bold')
+        plt.xlabel('Fecha')
+        plt.ylabel('IPC Promedio')
+        plt.xticks(rotation=45)
+        plt.grid(True, alpha=0.3)
+        
+    elif opcion == 4:
+        # IPC por categoría
+        ipc_categoria = df.groupby('category')['ipc'].mean().sort_values(ascending=True)
+        ipc_categoria.plot(kind='barh', color='lightgreen')
+        plt.title('IPC Promedio por Categoría', fontsize=16, fontweight='bold')
+        plt.xlabel('IPC Promedio')
+        
+    elif opcion == 5:
+        # Heatmap de IPC por ciudad y año
+        pivot_data = df.pivot_table(values='ipc', index='city', columns='year', aggfunc='mean')
+        ciudades_seleccionadas = df['city'].value_counts().head(8).index
+        pivot_subset = pivot_data.loc[ciudades_seleccionadas]
+        sns.heatmap(pivot_subset, annot=True, fmt='.2f', cmap='YlOrRd', cbar_kws={'label': 'IPC Promedio'})
+        plt.title('Heatmap IPC por Ciudad y Año', fontsize=16, fontweight='bold')
+        plt.xlabel('Año')
+        plt.ylabel('Ciudad')
+        
+    elif opcion == 6:
+        # Violin plot del IPC por categoría
+        sns.violinplot(data=df, x='ipc', y='category')
+        plt.title('Distribución del IPC por Categoría', fontsize=16, fontweight='bold')
+        plt.xlabel('Valor del IPC')
+        
+    elif opcion == 7:
+        # IPC mensual promedio
+        ipc_mensual = df.groupby('month')['ipc'].mean()
+        meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
+                 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        plt.bar(range(1, 13), [ipc_mensual.get(i, 0) for i in range(1, 13)], 
+                color='orange', alpha=0.7)
+        plt.title('IPC Promedio por Mes', fontsize=16, fontweight='bold')
+        plt.xlabel('Mes')
+        plt.ylabel('IPC Promedio')
+        plt.xticks(range(1, 13), meses, rotation=45)
+        plt.grid(True, alpha=0.3)
+        
+    elif opcion == 8:
+        # Scatter plot: IPC vs Año
+        plt.scatter(df['year'], df['ipc'], alpha=0.5, color='purple')
+        plt.title('Relación IPC vs Año', fontsize=16, fontweight='bold')
+        plt.xlabel('Año')
+        plt.ylabel('Valor del IPC')
+        plt.grid(True, alpha=0.3)
+        
+    elif opcion == 9:
+        # Top 10 ciudades con mayor variabilidad
+        variabilidad = df.groupby('city')['ipc'].std().nlargest(10)
+        variabilidad.plot(kind='bar', color='coral')
+        plt.title('Top 10 Ciudades con Mayor Variabilidad', fontsize=16, fontweight='bold')
+        plt.xlabel('Ciudad')
+        plt.ylabel('Desviación Estándar del IPC')
+        plt.xticks(rotation=45)
+        plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.show()
+
 def crear_visualizaciones(df):
     """
     Crea visualizaciones del análisis exploratorio
@@ -223,6 +331,39 @@ def crear_visualizaciones(df):
     
     print("✅ Visualizaciones guardadas como 'analisis_exploratorio_ipc.png'")
 
+def menu_graficos_interactivo(df):
+    """
+    Menú interactivo para seleccionar qué gráfico ver
+    """
+    while True:
+        mostrar_menu_graficos()
+        
+        try:
+            opcion = input("\n🎯 Selecciona una opción (0-10): ").strip()
+            
+            if opcion == '0':
+                print("👋 ¡Hasta luego!")
+                break
+            elif opcion == '10':
+                print("📊 Mostrando todos los gráficos...")
+                crear_visualizaciones(df)
+            elif opcion in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+                opcion_num = int(opcion)
+                print(f"📈 Generando gráfico {opcion_num}...")
+                crear_grafico_individual(df, opcion_num)
+            else:
+                print("❌ Opción inválida. Por favor, selecciona un número del 0 al 10.")
+                
+        except ValueError:
+            print("❌ Por favor, ingresa un número válido.")
+        except KeyboardInterrupt:
+            print("\n👋 ¡Hasta luego!")
+            break
+        except Exception as e:
+            print(f"❌ Error inesperado: {e}")
+        
+        input("\n⏸️  Presiona Enter para continuar...")
+
 def generar_resumen_estadistico(df):
     """
     Genera un resumen estadístico detallado
@@ -292,8 +433,33 @@ def main():
     # Generar resumen estadístico
     generar_resumen_estadistico(df_limpio)
     
-    # Crear visualizaciones
-    crear_visualizaciones(df_limpio)
+    # Preguntar al usuario qué tipo de visualización desea
+    print("\n🎯 OPCIONES DE VISUALIZACIÓN")
+    print("=" * 40)
+    print("1. 📊 Ver todos los gráficos automáticamente")
+    print("2. 🎯 Seleccionar gráficos individualmente")
+    print("=" * 40)
+    
+    while True:
+        try:
+            opcion_visualizacion = input("\nSelecciona una opción (1-2): ").strip()
+            
+            if opcion_visualizacion == '1':
+                # Crear todas las visualizaciones
+                crear_visualizaciones(df_limpio)
+                break
+            elif opcion_visualizacion == '2':
+                # Menú interactivo de gráficos
+                print("\n🎨 Modo interactivo activado")
+                menu_graficos_interactivo(df_limpio)
+                break
+            else:
+                print("❌ Opción inválida. Por favor, selecciona 1 o 2.")
+        except KeyboardInterrupt:
+            print("\n👋 ¡Hasta luego!")
+            return
+        except Exception as e:
+            print(f"❌ Error: {e}")
     
     # Guardar datos combinados
     df_limpio.to_csv('datos_ipc_combinados.csv', index=False)
