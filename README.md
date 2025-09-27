@@ -2,6 +2,13 @@
 
 Este proyecto realiza un análisis exploratorio de datos (EDA) sobre el Índice de Precios al Consumidor (IPC) de Colombia, combinando datos de tres archivos CSV que cubren diferentes períodos temporales.
 
+## ✨ Nuevas Características
+
+- **🎯 Menú Interactivo de Gráficos**: Selecciona qué gráfico ver individualmente
+- **📊 Modo Automático**: Ve todos los gráficos en una sola ventana
+- **🔄 Validación de Entrada**: Manejo robusto de errores y opciones inválidas
+- **👋 Salida Flexible**: Sal del programa en cualquier momento
+
 ## 📁 Archivos del Proyecto
 
 - `analisis_exploratorio_ipc.py` - Script principal de análisis
@@ -22,6 +29,13 @@ pip install -r requirements.txt
 python analisis_exploratorio_ipc.py
 ```
 
+### 3. Usar el menú interactivo
+Una vez ejecutado, el script te preguntará qué tipo de visualización deseas:
+- **Opción 1**: Ver todos los gráficos automáticamente
+- **Opción 2**: Seleccionar gráficos individualmente (modo interactivo)
+
+En el modo interactivo, podrás elegir entre 9 gráficos diferentes o ver todos juntos.
+
 ## 📊 Funcionalidades del Script
 
 ### 🔄 Carga y Combinación de Datos
@@ -36,16 +50,23 @@ python analisis_exploratorio_ipc.py
 - **Detección de valores atípicos**
 - **Análisis de variabilidad** por región
 
-### 📊 Visualizaciones Generadas
-1. **Distribución del IPC** - Histograma de frecuencias
-2. **Boxplot por ciudad** - Top 10 ciudades
-3. **Evolución temporal** - Tendencia del IPC promedio
-4. **IPC por categoría** - Comparación entre categorías
-5. **Heatmap ciudad-año** - Mapa de calor temporal
-6. **Violin plot por categoría** - Distribuciones detalladas
-7. **IPC mensual** - Patrones estacionales
-8. **Scatter plot IPC vs Año** - Relación temporal
-9. **Variabilidad por ciudad** - Top 10 ciudades más variables
+### 🎯 Menú Interactivo de Gráficos
+El script incluye un **menú interactivo** que te permite elegir cómo visualizar los datos:
+
+#### Opciones de Visualización:
+1. **📊 Ver todos los gráficos automáticamente** - Muestra los 9 gráficos en una sola ventana
+2. **🎯 Seleccionar gráficos individualmente** - Menú interactivo para elegir gráficos específicos
+
+#### Gráficos Disponibles (Modo Individual):
+1. **📈 Distribución del IPC** - Histograma de frecuencias
+2. **📦 Boxplot del IPC por Ciudad** - Top 10 ciudades
+3. **📅 Evolución Temporal del IPC Promedio** - Tendencia temporal
+4. **🏷️ IPC Promedio por Categoría** - Comparación entre categorías
+5. **🔥 Heatmap IPC por Ciudad y Año** - Mapa de calor temporal
+6. **🎻 Violin Plot del IPC por Categoría** - Distribuciones detalladas
+7. **📆 IPC Promedio por Mes** - Patrones estacionales
+8. **📊 Scatter Plot: IPC vs Año** - Relación temporal
+9. **📈 Top 10 Ciudades con Mayor Variabilidad** - Análisis de variabilidad
 
 ### 📋 Resumen Estadístico
 - Estadísticas descriptivas completas
@@ -98,6 +119,9 @@ El análisis incluye datos de múltiples ciudades colombianas, incluyendo:
 - Las visualizaciones se guardan en alta resolución (300 DPI)
 - Se incluye manejo de errores para archivos faltantes
 - El análisis es completamente reproducible
+- **Nueva funcionalidad**: Menú interactivo para selección de gráficos
+- Validación de entrada y manejo de errores en el modo interactivo
+- Opción de salida en cualquier momento (Ctrl+C o '0')
 
 ## 🤝 Contribuciones
 
