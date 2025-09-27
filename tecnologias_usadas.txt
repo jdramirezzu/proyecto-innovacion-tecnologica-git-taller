@@ -1,0 +1,22 @@
+Resumen de Tecnologías y Herramientas Utilizadas en el archivo analisis_exploratorio_ipc.py
+
+Lenguaje:
+- Python 3
+
+Librerías y módulos usados:
+- pandas: Para manipulación y análisis de datos.
+- numpy: Para operaciones numéricas.
+- matplotlib.pyplot: Para generación de gráficos y visualizaciones.
+- seaborn: Para visualizaciones estadísticas avanzadas.
+- datetime: Para manejo de fechas.
+- warnings: Para gestionar advertencias en la ejecución.
+
+Características del script:
+- Carga y combina archivos CSV con datos del IPC.
+- Limpieza y preparación de datos (manejo de nulos, formatos de fecha, nombres de columnas).
+- Análisis exploratorio de datos (estadísticas descriptivas, análisis por ciudad y categoría, detección de valores atípicos).
+- Generación de múltiples tipos de gráficos (histogramas, boxplots, heatmaps, violin plots, etc.).
+- Interfaz de menú interactivo para seleccionar visualizaciones.
+- Guarda resultados en archivos CSV y PNG.
+
+No se utilizan frameworks web, bases de datos ni herramientas externas fuera de las librerías mencionadas.
